@@ -5,6 +5,12 @@
 //  Copyright © 2020 宏輝. All rights reserved.
 //
 
+
+
+
+//TextFieldがキーボードの高さに応じて変更するコード
+//しかし、文字を入力した途端にTextFieldが隠れてしまう。
+//サンプルアプリからの差分はAutoLayOut
 import UIKit
 
 class ViewController: UIViewController,UITextFieldDelegate {
