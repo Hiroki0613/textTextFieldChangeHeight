@@ -121,21 +121,35 @@ class ViewController: UIViewController,UITextFieldDelegate {
         //上にスライドした後の高さを決めたい。
         // フレームの高さ - キーボードの高さ - messageTextFieldの高さ
         communicationTextField.frame.origin.y = screenSize.height - keyboardHeight - communicationTextField.frame.height
-        postCommentButton.frame.origin.y = screenSize.height - keyboardHeight - postCommentButton.frame.height
+//        postCommentButton.frame.origin.y = screenSize.height - keyboardHeight - postCommentButton.frame.height
+        
+        NSLayoutConstraint.activate([
+            communicationTextField.bottomAnchor.constraint(equalTo: toolbar.topAnchor, constant: -keyboardHeight+communicationTextField.frame.height),
+            postCommentButton.bottomAnchor.constraint(equalTo: toolbar.topAnchor, constant: -postCommentButton.frame.origin.y)
+        ])
     }
     
     @objc func keyboardWillHide(_ notifiation:NSNotification){
         
         //下へスライドした後の高さを決めたい。
         //今回はキーボードが消えるので、キーボードの高さは考慮しない。
+        
+        //キーボードの高さを取得
+              let keyboardHeight = ((notifiation.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as Any) as AnyObject).cgRectValue.height
+             
         //スクリーンの高さ - messageTextFieldの高さ
         communicationTextField.frame.origin.y = screenSize.height - communicationTextField.frame.height
         
+        
         guard let rect = (notifiation.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue,
-            
             
             //キーボードが下がる時間をdurationとして取得
             let duration = notifiation.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {return}
+        
+        
+        NSLayoutConstraint.activate([
+            communicationTextField.bottomAnchor.constraint(equalTo: toolbar.topAnchor, constant: keyboardHeight + 500)
+        ])
         
         UIView.animate(withDuration: duration) {
             let transform = CGAffineTransform(translationX: 0, y: 0)
